@@ -115,3 +115,4 @@ Sora, Luma) or shoot them practically, then drop the files straight into
 Both videos are used purely as ambient background layers behind gradient
 overlays, so slight imperfections in the loop point won't be very visible —
 prioritise mood and grade over perfect technical looping.
+# Aperture-Studio
