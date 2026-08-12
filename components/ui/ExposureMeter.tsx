@@ -32,7 +32,7 @@ export default function ExposureMeter() {
       initial={{ opacity: 0 }}
       animate={{ opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.8 }}
-      className="fixed right-5 top-0 z-40 hidden h-screen md:flex lg:right-7"
+      className="fixed right-5 top-0 z-[900] hidden h-screen md:flex lg:right-7"
     >
       <div className="relative flex h-full flex-col items-center py-20">
         {/* Track line */}
