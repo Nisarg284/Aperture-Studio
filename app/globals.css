@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------
+   Aperture House — design tokens
+   Warm-dark "darkroom" palette, brass accent, safelight red
+   used sparingly. Fraunces (display) / Manrope (body) /
+   IBM Plex Mono (EXIF captions + data).
+--------------------------------------------------------- */
+:root {
+  --color-ink: #0a0908;
+  --color-charcoal: #15120d;
+  --color-surface: #1d1811;
+  --color-surface-2: #241e15;
+  --color-hairline: #3a3122;
+  --color-hairline-soft: #2a2418;
+  --color-parchment: #efe8db;
+  --color-parchment-dim: #b7ac96;
+  --color-parchment-faint: #786f5c;
+  --color-brass: #c6a15b;
+  --color-brass-bright: #e7c179;
+  --color-safelight: #9a3324;
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-charcoal: var(--color-charcoal);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-hairline: var(--color-hairline);
+  --color-hairline-soft: var(--color-hairline-soft);
+  --color-parchment: var(--color-parchment);
+  --color-parchment-dim: var(--color-parchment-dim);
+  --color-parchment-faint: var(--color-parchment-faint);
+  --color-brass: var(--color-brass);
+  --color-brass-bright: var(--color-brass-bright);
+  --color-safelight: var(--color-safelight);
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-manrope);
+  --font-mono: var(--font-plex-mono);
+
+  --animate-marquee: marquee 34s linear infinite;
+}
+
+html {
+  scroll-behavior: auto;
+  background: var(--color-ink);
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-parchment);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--color-brass);
+  color: var(--color-ink);
+}
+
+/* Hide scrollbar — exposure meter serves as scroll indicator */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Film-grain overlay, sits above every section at low opacity */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* EXIF-style eyebrow label */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-brass);
+}
+
+.hairline {
+  border-color: var(--color-hairline);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Hide default cursor on fine-pointer devices (custom cursor replaces it) */
+@media (pointer: fine) {
+
+  html,
+  html * {
+    cursor: none !important;
+  }
+}
+
+/* Dust particle floating animation */
+@keyframes dust-float {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0);
+  }
+
+  10% {
+    opacity: var(--dust-opacity, 0.2);
+  }
+
+  90% {
+    opacity: var(--dust-opacity, 0.2);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-60vh) translateX(var(--dust-drift, 10px));
+  }
+}
+
+/* Section clip-path wipe reveal (applied via JS) */
+.section-wipe {
+  clip-path: inset(100% 0 0 0);
+}
+
+.section-wipe-revealed {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .dust-mote {
+    display: none !important;
+  }
+}
