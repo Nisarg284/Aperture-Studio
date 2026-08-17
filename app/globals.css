@@ -197,12 +197,20 @@ html {
   background-size: 180px 180px;
 }
 
-/* Kill grain on mobile — the fixed SVG filter + mix-blend-mode composites
-   every pixel on every scroll frame and destroys mobile GPU perf. */
+/* Reduce grain intensity on mobile for better GPU perf */
 @media (max-width: 768px) {
   .grain {
-    display: none;
+    opacity: 0.03;
   }
+}
+
+/* Hide scrollbar for horizontal carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 /* EXIF-style eyebrow label */

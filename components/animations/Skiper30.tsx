@@ -33,24 +33,35 @@ function useIsMobile() {
 
 // ─── Mobile: static masonry grid (zero JS animation overhead) ──────
 const MobileGallery = () => (
-  <div className="grid grid-cols-2 gap-3 px-4">
-    {images.slice(0, 8).map((src, i) => (
-      <div
-        key={i}
-        className={cn(
-          "overflow-hidden rounded-xl",
-          i % 3 === 0 ? "aspect-[3/4]" : "aspect-square"
-        )}
-      >
-        <img
-          src={src}
-          alt="Gallery"
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover"
-        />
-      </div>
-    ))}
+  <div className="relative mt-10">
+    {/* Horizontal scroll carousel with CSS scroll-snap */}
+    <div className="flex gap-4 overflow-x-auto px-5 pb-6 snap-x snap-mandatory scrollbar-hide"
+      style={{ WebkitOverflowScrolling: "touch" }}
+    >
+      {images.slice(0, 8).map((src, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 30, scale: 0.92 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+          className={cn(
+            "flex-shrink-0 snap-center overflow-hidden rounded-2xl",
+            i % 3 === 0 ? "w-[72vw] aspect-[3/4]" : "w-[60vw] aspect-[4/5]"
+          )}
+        >
+          <img
+            src={src}
+            alt="Gallery"
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover"
+          />
+        </motion.div>
+      ))}
+    </div>
+    {/* Scroll hint gradient */}
+    <div className="pointer-events-none absolute right-0 top-0 bottom-6 w-16 bg-gradient-to-l from-ink to-transparent" />
   </div>
 );
 

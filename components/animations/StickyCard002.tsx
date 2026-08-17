@@ -3,6 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
 import { cn } from "@/lib/utils";
@@ -34,38 +35,52 @@ function useIsMobile() {
   return isMobile;
 }
 
-// ─── Mobile: simple vertical card stack (zero GSAP, zero pinning) ──
+// ─── Mobile: horizontal snap-scroll cards (zero GSAP, entrance anims only) ──
 const MobileCards = ({ cards, imageClassName }: { cards: CardData[]; imageClassName?: string }) => (
-  <div className="flex flex-col gap-6 px-4">
-    {cards.map((card) => (
-      <div key={card.id} className="relative h-[60vh] w-full overflow-hidden rounded-2xl">
-        <img
-          src={card.image}
-          alt={card.alt || ""}
-          loading="lazy"
-          decoding="async"
-          className={cn("absolute h-full w-full object-cover", imageClassName)}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-2 p-6">
-          {card.fstop && (
-            <span className="eyebrow rounded-full border border-brass/40 bg-ink/40 px-3 py-1 backdrop-blur-sm">
-              {card.fstop}
-            </span>
-          )}
-          {card.title && (
-            <h3 className="font-display text-2xl font-medium text-parchment">
-              {card.title}
-            </h3>
-          )}
-          {card.description && (
-            <p className="max-w-md text-sm leading-relaxed text-parchment-dim">
-              {card.description}
-            </p>
-          )}
-        </div>
-      </div>
-    ))}
+  <div className="relative">
+    <div
+      className="flex gap-5 overflow-x-auto px-5 pb-6 snap-x snap-mandatory scrollbar-hide"
+      style={{ WebkitOverflowScrolling: "touch" }}
+    >
+      {cards.map((card, i) => (
+        <motion.div
+          key={card.id}
+          initial={{ opacity: 0, x: 40, scale: 0.95 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative flex-shrink-0 w-[82vw] h-[65vh] snap-center overflow-hidden rounded-2xl"
+        >
+          <img
+            src={card.image}
+            alt={card.alt || ""}
+            loading="lazy"
+            decoding="async"
+            className={cn("absolute h-full w-full object-cover", imageClassName)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-2 p-6">
+            {card.fstop && (
+              <span className="eyebrow rounded-full border border-brass/40 bg-ink/40 px-3 py-1 backdrop-blur-sm">
+                {card.fstop}
+              </span>
+            )}
+            {card.title && (
+              <h3 className="font-display text-2xl font-medium text-parchment">
+                {card.title}
+              </h3>
+            )}
+            {card.description && (
+              <p className="max-w-md text-sm leading-relaxed text-parchment-dim">
+                {card.description}
+              </p>
+            )}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+    {/* Scroll hint */}
+    <div className="pointer-events-none absolute right-0 top-0 bottom-6 w-12 bg-gradient-to-l from-ink to-transparent" />
   </div>
 );
 
