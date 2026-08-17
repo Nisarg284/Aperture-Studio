@@ -2,6 +2,7 @@
 
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const images = [
   "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop", // Portrait
@@ -62,12 +63,12 @@ const Skiper30 = () => {
 
       <div
         ref={gallery}
-        className="relative box-border flex h-[175vh] gap-[2vw] overflow-hidden bg-ink p-[2vw]"
+        className="relative box-border flex h-[100vh] md:h-[175vh] gap-[4vw] md:gap-[2vw] overflow-hidden bg-ink p-[4vw] md:p-[2vw]"
       >
-        <Column images={[images[0], images[1], images[2]]} y={y} />
-        <Column images={[images[3], images[4], images[5]]} y={y2} />
-        <Column images={[images[6], images[7], images[8]]} y={y3} />
-        <Column images={[images[9], images[10], images[11]]} y={y4} />
+        <Column images={[images[0], images[1], images[2]]} y={y} className="w-1/2 md:w-1/4 min-w-0" />
+        <Column images={[images[3], images[4], images[5]]} y={y2} className="w-1/2 md:w-1/4 min-w-0" />
+        <Column images={[images[6], images[7], images[8]]} y={y3} className="hidden md:flex md:w-1/4 min-w-[250px]" />
+        <Column images={[images[9], images[10], images[11]]} y={y4} className="hidden md:flex md:w-1/4 min-w-[250px]" />
       </div>
       
     </main>
@@ -77,12 +78,16 @@ const Skiper30 = () => {
 type ColumnProps = {
   images: string[];
   y: MotionValue<number>;
+  className?: string;
 };
 
-const Column = ({ images, y }: ColumnProps) => {
+const Column = ({ images, y, className }: ColumnProps) => {
   return (
     <motion.div
-      className="relative -top-[45%] flex h-full w-1/4 min-w-[250px] flex-col gap-[2vw] first:top-[-45%] [&:nth-child(2)]:top-[-95%] [&:nth-child(3)]:top-[-45%] [&:nth-child(4)]:top-[-75%]"
+      className={cn(
+        "relative -top-[45%] flex h-full flex-col gap-[4vw] md:gap-[2vw] first:top-[-45%] [&:nth-child(2)]:top-[-95%] [&:nth-child(3)]:top-[-45%] [&:nth-child(4)]:top-[-75%]",
+        className
+      )}
       style={{ y }}
     >
       {images.map((src, i) => (

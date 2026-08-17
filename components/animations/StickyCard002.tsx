@@ -43,10 +43,10 @@ const StickyCard002 = ({
       if (totalCards === 0 || !stickyCardsRef.current) return;
 
       // Set initial states
-      gsap.set(imageElements[0], { y: "0%", scale: 1, rotation: 0, filter: "brightness(1)" });
+      gsap.set(imageElements[0], { y: "0%", scale: 1, rotation: 0 });
 
       for (let i = 1; i < totalCards; i++) {
-        gsap.set(imageElements[i], { y: "100%", scale: 1, rotation: 0, filter: "brightness(1)" });
+        gsap.set(imageElements[i], { y: "100%", scale: 1, rotation: 0 });
       }
 
       // Create main scroll timeline
@@ -58,6 +58,7 @@ const StickyCard002 = ({
           pin: true,
           scrub: true, // Use true instead of 0.5 to prevent fighting with Lenis (fixes the jerk)
           pinSpacing: true,
+          anticipatePin: 1, // Smoothes out the initial pinning on mobile devices
         },
       });
 
@@ -72,7 +73,6 @@ const StickyCard002 = ({
           {
             scale: 0.85,
             rotation: i % 2 === 0 ? -4 : 4, // Alternate rotation for organic stack
-            filter: "brightness(0.3)", // Dim older cards
             duration: 1,
             ease: "none",
           },
