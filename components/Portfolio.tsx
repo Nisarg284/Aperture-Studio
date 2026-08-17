@@ -95,28 +95,10 @@ export default function Portfolio() {
           trigger: pinEl,
           start: "top top",
           end: () => `+=${getScrollDistance() + window.innerHeight * 0.15}`,
-          scrub: 1.2,
+          scrub: true,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            // Per-card parallax: tilt based on position relative to viewport center
-            const viewportCenter = window.innerWidth / 2;
-            cardRefs.current.forEach((card) => {
-              if (!card) return;
-              const rect = card.getBoundingClientRect();
-              const cardCenter = rect.left + rect.width / 2;
-              const offset = (cardCenter - viewportCenter) / viewportCenter; // -1 to 1
-              const rotateY = offset * 3; // max ±3 degrees
-              const scale = 1 - Math.abs(offset) * 0.04; // 0.96 to 1.0
-
-              gsap.set(card, {
-                rotateY,
-                scale: Math.max(scale, 0.96),
-                transformPerspective: 1200,
-              });
-            });
-          },
         },
       });
 
@@ -162,7 +144,7 @@ export default function Portfolio() {
               className={`group relative h-[50vh] shrink-0 overflow-hidden border border-hairline-soft bg-surface sm:h-[55vh] md:h-[62vh] ${shot.width} ${
                 i % 2 === 1 ? "md:mt-10" : "md:-mt-6"
               }`}
-              style={{ willChange: "transform", transformStyle: "preserve-3d" }}
+              style={{ willChange: "transform" }}
             >
               <Image
                 src={shot.src}
