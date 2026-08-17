@@ -94,8 +94,8 @@ export default function Portfolio() {
         scrollTrigger: {
           trigger: pinEl,
           start: "top top",
-          end: () => `+=${getScrollDistance()}`,
-          scrub: 0.8,
+          end: () => `+=${getScrollDistance() + window.innerHeight * 0.15}`,
+          scrub: 1.2,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -129,7 +129,7 @@ export default function Portfolio() {
   }, []);
 
   return (
-    <section id="portfolio" ref={sectionRef} className="relative bg-charcoal">
+    <section id="portfolio" ref={sectionRef} className="relative bg-ink">
       <div className="mx-auto max-w-7xl px-5 pb-10 pt-20 sm:px-6 sm:pb-12 sm:pt-28 md:px-10 md:pt-36">
         <Reveal>
           <span className="eyebrow">Selected Work</span>

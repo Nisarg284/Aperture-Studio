@@ -59,8 +59,8 @@ export default function Navbar() {
         open
           ? "bg-ink"
           : scrolled
-          ? "border-b border-hairline-soft bg-ink/90 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
+          ? "bg-ink/90 backdrop-blur-md"
+          : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 sm:px-6 sm:py-4 md:px-10">

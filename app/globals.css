@@ -221,8 +221,7 @@ html {
 }
 
 /* Hide default cursor on fine-pointer devices (custom cursor replaces it) */
-@media (pointer: fine) {
-
+@media (pointer: fine) and (min-width: 768px) {
   html,
   html * {
     cursor: none !important;

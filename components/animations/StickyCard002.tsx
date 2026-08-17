@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ReactLenis from "lenis/react";
 import { useRef } from "react";
 
 import { cn } from "@/lib/utils";
@@ -12,6 +11,9 @@ interface CardData {
   id: number | string;
   image: string;
   alt?: string;
+  title?: string;
+  description?: string;
+  fstop?: string;
 }
 
 interface StickyCard002Props {
@@ -28,31 +30,33 @@ const StickyCard002 = ({
   imageClassName,
 }: StickyCard002Props) => {
   const container = useRef(null);
-  const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const stickyCardsRef = useRef(null);
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(
     () => {
       gsap.registerPlugin(ScrollTrigger);
 
-      const imageElements = imageRefs.current;
+      const imageElements = imageRefs.current.filter(Boolean);
       const totalCards = imageElements.length;
 
-      if (!imageElements[0]) return;
+      if (totalCards === 0 || !stickyCardsRef.current) return;
 
-      gsap.set(imageElements[0], { y: "0%", scale: 1, rotation: 0 });
+      // Set initial states
+      gsap.set(imageElements[0], { y: "0%", scale: 1, rotation: 0, filter: "brightness(1)" });
 
       for (let i = 1; i < totalCards; i++) {
-        if (!imageElements[i]) continue;
-        gsap.set(imageElements[i], { y: "100%", scale: 1, rotation: 0 });
+        gsap.set(imageElements[i], { y: "100%", scale: 1, rotation: 0, filter: "brightness(1)" });
       }
 
+      // Create main scroll timeline
       const scrollTimeline = gsap.timeline({
         scrollTrigger: {
-          trigger: ".sticky-cards",
+          trigger: stickyCardsRef.current,
           start: "top top",
-          end: `+=${window.innerHeight * (totalCards - 1)}`,
+          end: `+=${window.innerHeight * totalCards}`, // Extended slightly to prevent hard stops
           pin: true,
-          scrub: 0.5,
+          scrub: true, // Use true instead of 0.5 to prevent fighting with Lenis (fixes the jerk)
           pinSpacing: true,
         },
       });
@@ -61,19 +65,21 @@ const StickyCard002 = ({
         const currentImage = imageElements[i];
         const nextImage = imageElements[i + 1];
         const position = i;
-        if (!currentImage || !nextImage) continue;
 
+        // Push current card back
         scrollTimeline.to(
           currentImage,
           {
-            scale: 0.7,
-            rotation: 5,
+            scale: 0.85,
+            rotation: i % 2 === 0 ? -4 : 4, // Alternate rotation for organic stack
+            filter: "brightness(0.3)", // Dim older cards
             duration: 1,
             ease: "none",
           },
           position,
         );
 
+        // Bring next card up
         scrollTimeline.to(
           nextImage,
           {
@@ -84,37 +90,31 @@ const StickyCard002 = ({
           position,
         );
       }
-
-      const resizeObserver = new ResizeObserver(() => {
-        ScrollTrigger.refresh();
-      });
-
-      if (container.current) {
-        resizeObserver.observe(container.current);
-      }
-
-      return () => {
-        resizeObserver.disconnect();
-        scrollTimeline.kill();
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
+      
+      // Removed the manual ResizeObserver and ScrollTrigger.getAll().kill() 
+      // because they cause global animation breakage and re-render loops.
+      // useGSAP handles cleanup automatically.
     },
     { scope: container },
   );
 
   return (
-    <div className={cn("relative h-full w-full bg-black py-20", className)} ref={container}>
-      <div className="font-geist flex items-center justify-center gap-2 mb-10">
-        <div className="grid content-start justify-items-center gap-6 text-center text-white">
-            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-white mb-4">
-              Our Services
-            </h2>
-            <p className="text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-[600px] mx-auto">
-              We offer premium quality services for your special moments.
-            </p>
+    <div className={cn("relative h-full w-full bg-ink py-20", className)} ref={container}>
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 md:px-10 pb-12">
+        <div className="grid content-start justify-items-center gap-4 text-center">
+          <span className="eyebrow">Our Craft</span>
+          <h2 className="font-display text-3xl font-medium leading-[1.1] text-parchment sm:text-4xl md:text-5xl">
+            Our Services
+          </h2>
+          <p className="text-parchment-dim md:text-lg max-w-[600px] mx-auto">
+            We offer premium quality services for your special moments.
+          </p>
         </div>
       </div>
-      <div className="sticky-cards relative flex h-[80vh] w-full items-center justify-center overflow-hidden p-3 lg:p-8">
+      <div 
+        ref={stickyCardsRef}
+        className="sticky-cards relative flex h-[80vh] w-full items-center justify-center overflow-hidden p-3 lg:p-8"
+      >
         <div
           className={cn(
             "relative h-[90%] w-full max-w-sm overflow-hidden rounded-lg sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl",
@@ -122,18 +122,42 @@ const StickyCard002 = ({
           )}
         >
           {cards.map((card, i) => (
-            <img
+            <div
               key={card.id}
-              src={card.image}
-              alt={card.alt || ""}
-              className={cn(
-                "rounded-4xl absolute h-full w-full object-cover",
-                imageClassName,
-              )}
+              className="absolute h-full w-full"
               ref={(el) => {
                 imageRefs.current[i] = el;
               }}
-            />
+            >
+              <img
+                src={card.image}
+                alt={card.alt || ""}
+                className={cn(
+                  "rounded-4xl absolute h-full w-full object-cover",
+                  imageClassName,
+                )}
+              />
+              {/* Dark gradient overlay for text readability */}
+              <div className="rounded-4xl absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+              {/* Service info overlay */}
+              <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-3 p-8 sm:p-10 md:p-12">
+                {card.fstop && (
+                  <span className="eyebrow rounded-full border border-brass/40 bg-ink/40 px-3 py-1 backdrop-blur-sm">
+                    {card.fstop}
+                  </span>
+                )}
+                {card.title && (
+                  <h3 className="font-display text-2xl font-medium text-parchment sm:text-3xl md:text-4xl">
+                    {card.title}
+                  </h3>
+                )}
+                {card.description && (
+                  <p className="max-w-md text-sm leading-relaxed text-parchment-dim sm:text-base">
+                    {card.description}
+                  </p>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -146,33 +170,44 @@ const Skiper17 = () => {
   const defaultCards = [
     {
       id: 1,
-      image: "/images/studio_wedding_1786909746475.jpg",
-      alt: "Wedding"
+      image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop",
+      alt: "Wedding Photography",
+      title: "Wedding & Documentary",
+      description: "A full day, told in order. Vows in the morning light, the last dance under something dimmer.",
+      fstop: "f/5.6",
     },
     {
       id: 2,
-      image: "/images/studio_portrait_1786909976702.jpg",
-      alt: "Portrait"
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop",
+      alt: "Portrait Photography",
+      title: "Portrait & Headshot",
+      description: "Shallow focus, one true expression. For actors, founders, and anyone who needs a face that holds a room.",
+      fstop: "f/1.4",
     },
     {
       id: 3,
-      image: "/images/studio_commercial_1786910216249.jpg",
-      alt: "Commercial"
+      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop",
+      alt: "Commercial Photography",
+      title: "Product & Commercial",
+      description: "Edge-to-edge sharpness for catalogues, campaigns, and packaging that has to survive a zoom-in.",
+      fstop: "f/8",
     },
     {
       id: 4,
-      image: "/images/studio_gear_1786910275849.jpg",
-      alt: "Gear"
+      image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
+      alt: "Fashion & Editorial",
+      title: "Fashion & Editorial",
+      description: "Motion, mood, and a wardrobe department's worth of changes. Built for lookbooks and magazine spreads.",
+      fstop: "f/2.8",
     },
   ];
 
   return (
-    <ReactLenis root>
-      <div className="h-full w-full bg-black">
-        <StickyCard002 cards={defaultCards} />
-      </div>
-    </ReactLenis>
+    <div className="h-full w-full bg-ink">
+      <StickyCard002 cards={defaultCards} />
+    </div>
   );
 };
 
 export { Skiper17, StickyCard002 };
+

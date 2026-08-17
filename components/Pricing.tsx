@@ -3,6 +3,7 @@
 import { Check } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import MagneticButton from "./ui/MagneticButton";
+import Parallax from "./ui/Parallax";
 import { cn } from "@/lib/utils";
 
 const TIERS = [
@@ -54,9 +55,10 @@ const TIERS = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="relative bg-charcoal">
+    <section id="pricing" className="relative bg-ink overflow-hidden">
       <div className="mx-auto max-w-7xl px-5 py-20 sm:px-6 sm:py-28 md:px-10 md:py-36">
-        <div className="max-w-xl">
+        <Parallax offset={25} opacity={[0.4, 1]}>
+          <div className="max-w-xl">
           <Reveal>
             <span className="eyebrow">Packages</span>
           </Reveal>
@@ -73,8 +75,10 @@ export default function Pricing() {
             </p>
           </Reveal>
         </div>
+        </Parallax>
 
-        <div className="mt-12 grid gap-5 sm:mt-16 sm:gap-6 lg:grid-cols-3">
+        <Parallax offset={-20}>
+          <div className="mt-12 grid gap-5 sm:mt-16 sm:gap-6 lg:grid-cols-3">
           {TIERS.map((tier, i) => (
             <Reveal key={tier.name} index={i}>
               <div
@@ -133,6 +137,7 @@ export default function Pricing() {
             </Reveal>
           ))}
         </div>
+        </Parallax>
       </div>
     </section>
   );

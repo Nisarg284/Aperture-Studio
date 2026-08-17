@@ -12,9 +12,15 @@ export default function CustomCursor() {
   const trailRef = useRef<HTMLDivElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
 
-  // Step 1: Detect pointer type
+  // Step 1: Detect pointer type and screen width
   useEffect(() => {
-    setIsDesktop(window.matchMedia("(pointer: fine)").matches);
+    const checkIsDesktop = () => {
+      setIsDesktop(window.matchMedia("(pointer: fine) and (min-width: 768px)").matches);
+    };
+    
+    checkIsDesktop();
+    window.addEventListener("resize", checkIsDesktop);
+    return () => window.removeEventListener("resize", checkIsDesktop);
   }, []);
 
   // Step 2: Set up GSAP only after the DOM has rendered with refs

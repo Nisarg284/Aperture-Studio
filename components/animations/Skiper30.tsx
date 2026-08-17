@@ -1,23 +1,22 @@
 "use client";
 
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
-import Lenis from "lenis";
 import { useEffect, useRef, useState } from "react";
 
 const images = [
-  "/images/studio_wedding_1786909746475.jpg",
-  "/images/studio_portrait_1786909976702.jpg",
-  "/images/studio_commercial_1786910216249.jpg",
-  "/images/studio_gear_1786910275849.jpg",
-  "/images/studio_wedding_1786909746475.jpg",
-  "/images/studio_portrait_1786909976702.jpg",
-  "/images/studio_commercial_1786910216249.jpg",
-  "/images/studio_gear_1786910275849.jpg",
-  "/images/studio_wedding_1786909746475.jpg",
-  "/images/studio_portrait_1786909976702.jpg",
-  "/images/studio_commercial_1786910216249.jpg",
-  "/images/studio_gear_1786910275849.jpg",
-  "/images/studio_wedding_1786909746475.jpg",
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop", // Portrait
+  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop", // Fashion
+  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop", // Product
+  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop", // Wedding
+  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop", // B&W Portrait
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop", // Architecture
+  "https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?q=80&w=800&auto=format&fit=crop", // Editorial
+  "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=800&auto=format&fit=crop", // Shadows/Artistic
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop", // Moody Landscape
+  "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop", // Detail
+  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=800&auto=format&fit=crop", // Auto/Vintage
+  "https://images.unsplash.com/photo-1540039155732-680874e8a514?q=80&w=800&auto=format&fit=crop", // Event/Concert
+  "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=80&w=800&auto=format&fit=crop", // Minimalist
 ];
 
 const Skiper30 = () => {
@@ -36,19 +35,11 @@ const Skiper30 = () => {
   const y4 = useTransform(scrollYProgress, [0, 1], [0, height * 3]);
 
   useEffect(() => {
-    const lenis = new Lenis();
-
-    const raf = (time: number) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-
     const resize = () => {
       setDimension({ width: window.innerWidth, height: window.innerHeight });
     };
 
     window.addEventListener("resize", resize);
-    requestAnimationFrame(raf);
     resize();
 
     return () => {
@@ -57,13 +48,13 @@ const Skiper30 = () => {
   }, []);
 
   return (
-    <main className="w-full bg-black text-white py-20">
-      <div className="font-geist flex items-center justify-center gap-2 mb-10">
-        <div className="grid content-start justify-items-center gap-6 text-center text-white">
-            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-white mb-4">
+    <main className="w-full bg-ink text-parchment py-20">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="grid content-start justify-items-center gap-6 text-center text-parchment">
+          <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-parchment mb-4">
               Our Visual Symphony
             </h2>
-            <p className="text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-[600px] mx-auto">
+            <p className="text-parchment-dim md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-[600px] mx-auto">
               Explore our curated collection of moments captured in time.
             </p>
         </div>
@@ -71,7 +62,7 @@ const Skiper30 = () => {
 
       <div
         ref={gallery}
-        className="relative box-border flex h-[175vh] gap-[2vw] overflow-hidden bg-black p-[2vw]"
+        className="relative box-border flex h-[175vh] gap-[2vw] overflow-hidden bg-ink p-[2vw]"
       >
         <Column images={[images[0], images[1], images[2]]} y={y} />
         <Column images={[images[3], images[4], images[5]]} y={y2} />

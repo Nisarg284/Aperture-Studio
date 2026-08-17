@@ -32,7 +32,7 @@ export default function Testimonials() {
   const looped = [...QUOTES, ...QUOTES];
 
   return (
-    <section className="relative overflow-hidden border-y border-hairline-soft bg-charcoal py-16 sm:py-24 md:py-28">
+    <section className="relative overflow-hidden border-y border-hairline-soft bg-ink py-16 sm:py-24 md:py-28">
       <div className="mx-auto mb-10 max-w-7xl px-5 sm:mb-14 sm:px-6 md:px-10">
         <Reveal>
           <span className="eyebrow">In Their Words</span>

@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Reveal from "./ui/Reveal";
+import Parallax from "./ui/Parallax";
 
 const PROJECT_TYPES = ["Portrait", "Product", "Fashion", "Wedding", "Other"];
 
@@ -16,8 +17,9 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative bg-ink">
+    <section id="contact" className="relative bg-ink overflow-hidden">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 sm:px-6 sm:py-28 md:grid-cols-[1fr_1.2fr] md:gap-16 md:px-10 md:py-36">
+        <Parallax offset={30} opacity={[0.4, 1]}>
         <div>
           <Reveal>
             <span className="eyebrow">Get In Touch</span>
@@ -55,8 +57,9 @@ export default function Contact() {
             </dl>
           </Reveal>
         </div>
+        </Parallax>
 
-        <Reveal variant="fade" index={1}>
+        <Parallax offset={-15}>
           {status === "sent" ? (
             <div className="flex h-full min-h-[420px] flex-col items-center justify-center border border-hairline-soft bg-surface p-10 text-center">
               <p className="font-display text-2xl text-brass-bright">
@@ -149,7 +152,7 @@ export default function Contact() {
               </button>
             </form>
           )}
-        </Reveal>
+        </Parallax>
       </div>
     </section>
   );

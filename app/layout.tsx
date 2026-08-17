@@ -48,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", fraunces.variable, manrope.variable, plexMono.variable, "font-sans", geist.variable)}
+      className={cn("dark h-full", fraunces.variable, manrope.variable, plexMono.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full bg-ink text-parchment font-body antialiased">
         <div className="grain" aria-hidden="true" />
