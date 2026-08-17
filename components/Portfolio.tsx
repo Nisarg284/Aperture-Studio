@@ -87,6 +87,9 @@ export default function Portfolio() {
 
       const isMobile = window.innerWidth < 768;
 
+      const getScrollDistance = () =>
+        Math.max(track.scrollWidth - pinEl.offsetWidth, 0);
+
       const tween = gsap.to(track, {
         x: () => -getScrollDistance(),
         ease: "none",
