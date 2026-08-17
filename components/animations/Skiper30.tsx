@@ -20,7 +20,41 @@ const images = [
   "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=60&w=400&auto=format&fit=crop", // Minimalist
 ];
 
-const Skiper30 = () => {
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(
+      "ontouchstart" in window || navigator.maxTouchPoints > 0
+    );
+  }, []);
+  return isMobile;
+}
+
+// ─── Mobile: static masonry grid (zero JS animation overhead) ──────
+const MobileGallery = () => (
+  <div className="grid grid-cols-2 gap-3 px-4">
+    {images.slice(0, 8).map((src, i) => (
+      <div
+        key={i}
+        className={cn(
+          "overflow-hidden rounded-xl",
+          i % 3 === 0 ? "aspect-[3/4]" : "aspect-square"
+        )}
+      >
+        <img
+          src={src}
+          alt="Gallery"
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover"
+        />
+      </div>
+    ))}
+  </div>
+);
+
+// ─── Desktop: parallax columns (original effect) ───────────────────
+const DesktopGallery = () => {
   const gallery = useRef<HTMLDivElement>(null);
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
 
@@ -39,38 +73,41 @@ const Skiper30 = () => {
     const resize = () => {
       setDimension({ width: window.innerWidth, height: window.innerHeight });
     };
-
     window.addEventListener("resize", resize);
     resize();
-
-    return () => {
-      window.removeEventListener("resize", resize);
-    };
+    return () => window.removeEventListener("resize", resize);
   }, []);
+
+  return (
+    <div
+      ref={gallery}
+      className="relative box-border flex h-[175vh] gap-[2vw] overflow-hidden bg-ink p-[2vw]"
+    >
+      <Column images={[images[0], images[1], images[2]]} y={y} />
+      <Column images={[images[3], images[4], images[5]]} y={y2} />
+      <Column images={[images[6], images[7], images[8]]} y={y3} />
+      <Column images={[images[9], images[10], images[11]]} y={y4} />
+    </div>
+  );
+};
+
+const Skiper30 = () => {
+  const isMobile = useIsMobile();
 
   return (
     <main className="w-full bg-ink text-parchment py-20">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid content-start justify-items-center gap-6 text-center text-parchment">
           <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-parchment mb-4">
-              Our Visual Symphony
-            </h2>
-            <p className="text-parchment-dim md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-[600px] mx-auto">
-              Explore our curated collection of moments captured in time.
-            </p>
+            Our Visual Symphony
+          </h2>
+          <p className="text-parchment-dim md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-[600px] mx-auto">
+            Explore our curated collection of moments captured in time.
+          </p>
         </div>
       </div>
 
-      <div
-        ref={gallery}
-        className="relative box-border flex h-[100vh] md:h-[175vh] gap-[4vw] md:gap-[2vw] overflow-hidden bg-ink p-[4vw] md:p-[2vw]"
-      >
-        <Column images={[images[0], images[1], images[2]]} y={y} className="w-1/2 md:w-1/4 min-w-0" />
-        <Column images={[images[3], images[4], images[5]]} y={y2} className="w-1/2 md:w-1/4 min-w-0" />
-        <Column images={[images[6], images[7], images[8]]} y={y3} className="hidden md:flex md:w-1/4 min-w-[250px]" />
-        <Column images={[images[9], images[10], images[11]]} y={y4} className="hidden md:flex md:w-1/4 min-w-[250px]" />
-      </div>
-      
+      {isMobile ? <MobileGallery /> : <DesktopGallery />}
     </main>
   );
 };
@@ -78,23 +115,21 @@ const Skiper30 = () => {
 type ColumnProps = {
   images: string[];
   y: MotionValue<number>;
-  className?: string;
 };
 
-const Column = ({ images, y, className }: ColumnProps) => {
+const Column = ({ images, y }: ColumnProps) => {
   return (
     <motion.div
-      className={cn(
-        "relative -top-[45%] flex h-full flex-col gap-[4vw] md:gap-[2vw] first:top-[-45%] [&:nth-child(2)]:top-[-95%] [&:nth-child(3)]:top-[-45%] [&:nth-child(4)]:top-[-75%]",
-        className
-      )}
+      className="relative -top-[45%] flex h-full w-1/4 min-w-[250px] flex-col gap-[2vw] first:top-[-45%] [&:nth-child(2)]:top-[-95%] [&:nth-child(3)]:top-[-45%] [&:nth-child(4)]:top-[-75%]"
       style={{ y }}
     >
       {images.map((src, i) => (
         <div key={i} className="relative h-full w-full overflow-hidden rounded-xl">
           <img
-            src={`${src}`}
+            src={src}
             alt="image"
+            loading="lazy"
+            decoding="async"
             className="pointer-events-none object-cover h-full w-full"
           />
         </div>

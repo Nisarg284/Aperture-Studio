@@ -197,6 +197,14 @@ html {
   background-size: 180px 180px;
 }
 
+/* Kill grain on mobile — the fixed SVG filter + mix-blend-mode composites
+   every pixel on every scroll frame and destroys mobile GPU perf. */
+@media (max-width: 768px) {
+  .grain {
+    display: none;
+  }
+}
+
 /* EXIF-style eyebrow label */
 .eyebrow {
   font-family: var(--font-mono);
