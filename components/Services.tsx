@@ -102,7 +102,7 @@ export default function Services() {
                 <span className="eyebrow">What We Shoot</span>
               </Reveal>
               <Reveal index={1}>
-                <h2 className="mt-3 font-display text-4xl font-medium leading-[1.1] text-parchment sm:mt-4 sm:text-5xl md:text-6xl max-w-lg">
+                <h2 className="mt-3 font-display text-3xl font-medium leading-[1.1] text-parchment sm:mt-4 sm:text-4xl md:text-5xl max-w-lg">
                   Four ways we see.
                 </h2>
               </Reveal>
@@ -138,7 +138,7 @@ export default function Services() {
                           0{i + 1}
                         </span>
                         <h3 className={cn(
-                          "font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl transition-all duration-500",
+                          "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl transition-all duration-500",
                           isActive ? "text-parchment translate-x-4" : "text-parchment-dim"
                         )}>
                           {service.name}
