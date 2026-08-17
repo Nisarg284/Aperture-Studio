@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Manrope, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, Manrope, IBM_Plex_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/ui/CustomCursor";
 import ExposureMeter from "@/components/ui/ExposureMeter";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -45,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${manrope.variable} ${plexMono.variable} h-full`}
+      className={cn("h-full", fraunces.variable, manrope.variable, plexMono.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full bg-ink text-parchment font-body antialiased">
         <div className="grain" aria-hidden="true" />

@@ -10,9 +10,9 @@ import MagneticButton from "./ui/MagneticButton";
 import DustParticles from "./ui/DustParticles";
 import InteractiveParticles from "./ui/interactive-particles";
 
-export default function Hero() {
+export default function HeroParticles() {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Hero() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      gsap.to(videoRef.current, {
+      gsap.to(bgRef.current, {
         yPercent: 18,
         scale: 1.12,
         ease: "none",
@@ -42,28 +42,21 @@ export default function Hero() {
       ref={sectionRef}
       className="relative z-0 flex h-[100svh] min-h-[580px] w-full items-end overflow-hidden bg-ink"
     >
-      {/* Background: video enhances, gradient + poster always present */}
+      {/* Background: Particles take center stage without the video */}
       <div
-        ref={videoRef}
+        ref={bgRef}
         className="absolute inset-0 -z-10 h-[120%] w-full scale-105"
         data-cursor="view"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(28,23,16,0.2),rgba(10,9,8,0.95))] z-0" />
-        <video
-          className="h-full w-full object-cover opacity-70 absolute inset-0 -z-20"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1920&auto=format&fit=crop"
-        >
-          <source src="/videos/hero-loop.mp4" type="video/mp4" />
-        </video>
+        {/* A deep radial gradient to give depth behind the particles */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(28,23,16,0.3),rgba(10,9,8,1))] z-0" />
         
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-ink/60 z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-transparent to-transparent z-10 pointer-events-none" />
+        {/* Gradients to blend the edges into the rest of the dark site */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/90 via-transparent to-transparent z-10 pointer-events-none" />
         
-        <div className="absolute inset-0 z-20 opacity-90">
+        {/* Interactive Particles */}
+        <div className="absolute inset-0 z-20 opacity-100">
           <InteractiveParticles
             src="/images/studio_portrait_1786909976702.jpg"
             color="#d4af37" 
@@ -78,7 +71,7 @@ export default function Hero() {
       <ApertureReveal />
       <DustParticles count={20} />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-10 pt-32 sm:px-6 sm:pb-16 md:px-10 md:pb-24">
+      <div className="relative z-30 mx-auto w-full max-w-7xl px-5 pb-10 pt-32 sm:px-6 sm:pb-16 md:px-10 md:pb-24">
         <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -139,7 +132,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.9 }}
-        className="pointer-events-none absolute bottom-8 right-6 z-10 hidden flex-col items-end gap-2 md:flex md:right-10"
+        className="pointer-events-none absolute bottom-8 right-6 z-30 hidden flex-col items-end gap-2 md:flex md:right-10"
       >
         <span className="font-mono text-[0.65rem] tracking-[0.2em] text-parchment-faint">
           SCROLL — F/2.8
