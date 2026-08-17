@@ -245,8 +245,8 @@ html {
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.22em;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-brass);
 }
