@@ -213,7 +213,36 @@ html {
   display: none;
 }
 
-/* EXIF-style eyebrow label */
+/* Auto-scrolling marquee for mobile gallery */
+.marquee-row {
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 0.75rem;
+  width: max-content;
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 25s linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right 30s linear infinite;
+}
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;

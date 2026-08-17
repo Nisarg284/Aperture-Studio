@@ -32,38 +32,36 @@ function useIsMobile() {
 }
 
 // ─── Mobile: static masonry grid (zero JS animation overhead) ──────
-const MobileGallery = () => (
-  <div className="relative mt-10">
-    {/* Horizontal scroll carousel with CSS scroll-snap */}
-    <div className="flex gap-4 overflow-x-auto px-5 pb-6 snap-x snap-mandatory scrollbar-hide"
-      style={{ WebkitOverflowScrolling: "touch" }}
-    >
-      {images.slice(0, 8).map((src, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 30, scale: 0.92 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className={cn(
-            "flex-shrink-0 snap-center overflow-hidden rounded-2xl",
-            i % 3 === 0 ? "w-[72vw] aspect-[3/4]" : "w-[60vw] aspect-[4/5]"
-          )}
-        >
-          <img
-            src={src}
-            alt="Gallery"
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
-          />
-        </motion.div>
-      ))}
+// ─── Mobile: auto-scrolling dual marquee (pure CSS animation) ──────
+const MobileGallery = () => {
+  const row1 = images.slice(0, 6);
+  const row2 = images.slice(6).concat(images.slice(0, 4));
+
+  return (
+    <div className="mt-10 flex flex-col gap-3 overflow-hidden">
+      {/* Row 1: scrolls left */}
+      <div className="marquee-row">
+        <div className="marquee-track animate-marquee-left">
+          {[...row1, ...row1].map((src, i) => (
+            <div key={i} className="flex-shrink-0 w-[45vw] aspect-[3/4] overflow-hidden rounded-xl">
+              <img src={src} alt="Gallery" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Row 2: scrolls right */}
+      <div className="marquee-row">
+        <div className="marquee-track animate-marquee-right">
+          {[...row2, ...row2].map((src, i) => (
+            <div key={i} className="flex-shrink-0 w-[40vw] aspect-square overflow-hidden rounded-xl">
+              <img src={src} alt="Gallery" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-    {/* Scroll hint gradient */}
-    <div className="pointer-events-none absolute right-0 top-0 bottom-6 w-16 bg-gradient-to-l from-ink to-transparent" />
-  </div>
-);
+  );
+};
 
 // ─── Desktop: parallax columns (original effect) ───────────────────
 const DesktopGallery = () => {
