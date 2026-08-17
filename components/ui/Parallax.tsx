@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +18,16 @@ type ParallaxProps = {
   as?: "div" | "section" | "figure" | "span";
 };
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(
+      "ontouchstart" in window || navigator.maxTouchPoints > 0
+    );
+  }, []);
+  return isMobile;
+}
+
 export default function Parallax({
   children,
   offset = 40,
@@ -29,6 +39,7 @@ export default function Parallax({
 }: ParallaxProps) {
   const ref = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -48,7 +59,8 @@ export default function Parallax({
   );
   const rotateVal = useTransform(scrollYProgress, [0, 1], [rotate, -rotate]);
 
-  if (prefersReducedMotion) {
+  // On mobile / reduced motion, render a plain tag with zero scroll overhead.
+  if (prefersReducedMotion || isMobile) {
     const Tag = as;
     return <Tag className={className}>{children}</Tag>;
   }

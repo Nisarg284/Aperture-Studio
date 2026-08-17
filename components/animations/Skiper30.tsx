@@ -5,19 +5,19 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const images = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop", // Portrait
-  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop", // Fashion
-  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop", // Product
-  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop", // Wedding
-  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop", // B&W Portrait
-  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop", // Architecture
-  "https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?q=80&w=800&auto=format&fit=crop", // Editorial
-  "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=800&auto=format&fit=crop", // Shadows/Artistic
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop", // Moody Landscape
-  "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop", // Detail
-  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=800&auto=format&fit=crop", // Auto/Vintage
-  "https://images.unsplash.com/photo-1540039155732-680874e8a514?q=80&w=800&auto=format&fit=crop", // Event/Concert
-  "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=80&w=800&auto=format&fit=crop", // Minimalist
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=400&auto=format&fit=crop", // Portrait
+  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=60&w=400&auto=format&fit=crop", // Fashion
+  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=60&w=400&auto=format&fit=crop", // Product
+  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=60&w=400&auto=format&fit=crop", // Wedding
+  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=400&auto=format&fit=crop", // B&W Portrait
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=60&w=400&auto=format&fit=crop", // Architecture
+  "https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?q=60&w=400&auto=format&fit=crop", // Editorial
+  "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=60&w=400&auto=format&fit=crop", // Shadows/Artistic
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=60&w=400&auto=format&fit=crop", // Moody Landscape
+  "https://images.unsplash.com/photo-1558655146-d09347e92766?q=60&w=400&auto=format&fit=crop", // Detail
+  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=60&w=400&auto=format&fit=crop", // Auto/Vintage
+  "https://images.unsplash.com/photo-1540039155732-680874e8a514?q=60&w=400&auto=format&fit=crop", // Event/Concert
+  "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=60&w=400&auto=format&fit=crop", // Minimalist
 ];
 
 const Skiper30 = () => {

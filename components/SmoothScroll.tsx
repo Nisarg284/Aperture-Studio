@@ -19,9 +19,13 @@ export default function SmoothScroll({
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (prefersReducedMotion) {
-      // Skip inertia scrolling entirely for reduced-motion users;
-      // ScrollTrigger still works fine against native scroll.
+    // Skip Lenis on touch devices — native scroll is already smooth on
+    // mobile, and Lenis's frame-by-frame raf loop + touch hijacking is
+    // the #1 cause of scroll lag on phones/tablets.
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+    if (prefersReducedMotion || isTouchDevice) {
       return;
     }
 
@@ -29,7 +33,6 @@ export default function SmoothScroll({
       duration: 1.1,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      touchMultiplier: 1.1,
     });
     lenisRef.current = lenis;
 
