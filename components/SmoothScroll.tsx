@@ -29,10 +29,9 @@ export default function SmoothScroll({
     }
 
     const lenis = new Lenis({
-      duration: 0.8,
+      duration: 1.1,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      lerp: 0.1,
     });
     lenisRef.current = lenis;
 

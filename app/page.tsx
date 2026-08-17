@@ -39,23 +39,23 @@ function MobileHero() {
   }, []);
 
   return (
-    <section className="relative h-[100dvh] w-full overflow-hidden bg-ink md:hidden">
+    <section className="relative h-[100svh] min-h-[100svh] w-full overflow-hidden bg-ink md:hidden">
       {/* Auto-crossfading background images */}
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="sync">
         <motion.img
           key={current}
           src={IMAGES[current].src}
           alt={IMAGES[current].alt}
-          initial={{ opacity: 0, scale: 1.1 }}
+          initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
-          className="absolute inset-0 h-full w-full object-cover"
+          transition={{ duration: 1, ease: "easeInOut" }}
+          className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         />
       </AnimatePresence>
 
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/30 pointer-events-none" />
 
       {/* Content */}
       <div className="relative flex h-full flex-col items-center justify-end pb-16 px-6 text-center">

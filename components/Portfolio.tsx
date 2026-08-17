@@ -85,8 +85,7 @@ export default function Portfolio() {
       const pinEl = pinRef.current;
       if (!track || !pinEl) return;
 
-      const getScrollDistance = () =>
-        Math.max(track.scrollWidth - pinEl.offsetWidth, 0);
+      const isMobile = window.innerWidth < 768;
 
       const tween = gsap.to(track, {
         x: () => -getScrollDistance(),
@@ -94,11 +93,28 @@ export default function Portfolio() {
         scrollTrigger: {
           trigger: pinEl,
           start: "top top",
-          end: () => `+=${getScrollDistance() + window.innerHeight * 0.15}`,
+          end: () => `+=${getScrollDistance() + (isMobile ? 0 : window.innerHeight * 0.15)}`,
           scrub: true,
           pin: true,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (isMobile) return; // Skip heavy layout computations on mobile
+            const viewportCenter = window.innerWidth / 2;
+            cardRefs.current.forEach((card) => {
+              if (!card) return;
+              const rect = card.getBoundingClientRect();
+              const cardCenter = rect.left + rect.width / 2;
+              const offset = (cardCenter - viewportCenter) / viewportCenter;
+              const rotateY = offset * 3;
+              const scale = 1 - Math.abs(offset) * 0.04;
+
+              gsap.set(card, {
+                rotateY,
+                scale: Math.max(scale, 0.96),
+                transformPerspective: 1200,
+              });
+            });
+          },
         },
       });
 
@@ -150,18 +166,8 @@ export default function Portfolio() {
                 src={shot.src}
                 alt={`${shot.category} photograph — ${shot.title}`}
                 fill
-                sizes="80vw"
-                className="object-cover transition-all duration-700 ease-out group-hover:scale-105"
-                style={{
-                  filter: "grayscale(60%) sepia(20%) blur(0.4px) brightness(0.9)",
-                  transitionProperty: "transform, filter",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.filter = "grayscale(0%) sepia(0%) blur(0px) brightness(1)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.filter = "grayscale(60%) sepia(20%) blur(0.4px) brightness(0.9)";
-                }}
+                sizes="(max-width: 768px) 80vw, 34vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               {/* Warm brass tint overlay — fades on hover */}
               <div
