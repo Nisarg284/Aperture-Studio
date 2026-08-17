@@ -26,9 +26,10 @@ interface StickyCard002Props {
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
-    setIsMobile(
-      "ontouchstart" in window || navigator.maxTouchPoints > 0
-    );
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
   return isMobile;
 }

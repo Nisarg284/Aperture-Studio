@@ -19,13 +19,12 @@ export default function SmoothScroll({
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // Skip Lenis on touch devices — native scroll is already smooth on
+    // Skip Lenis on small screens — native scroll is already smooth on
     // mobile, and Lenis's frame-by-frame raf loop + touch hijacking is
     // the #1 cause of scroll lag on phones/tablets.
-    const isTouchDevice =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const isMobile = window.innerWidth < 768;
 
-    if (prefersReducedMotion || isTouchDevice) {
+    if (prefersReducedMotion || isMobile) {
       return;
     }
 
